@@ -1,10 +1,11 @@
-Shader "Xbox350/BasicColor"
+Shader "Xbox350/Unlit_Texture"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Tint ("Tint", Color) = (1,1,1,1)
         _Intensity("Intensity", Range(0,1)) = 1
+        _Scroll("Scroll", Vector) = (0,0,0)
     }
     SubShader
     {
@@ -34,27 +35,33 @@ Shader "Xbox350/BasicColor"
                 float4 vertex : SV_POSITION;
             };
 
-            // sampler2D _MainTex;
-            // float4 _MainTex_ST;
-            fixed4 _Color;
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+
+            fixed4 _Tint;
             float _Intensity;
+            float4 _Scroll;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                // o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                // UNITY_TRANSFER_FOG(o,o.vertex);
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+
+                o.uv.x = o.uv.x + (_Time.y * _Scroll.x);
+                o.uv.y = o.uv.y + (_Time.y * _Scroll.y);
+
+                UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // // sample the texture
-                // fixed4 col = tex2D(_MainTex, i.uv);
-                // // apply fog
+                // sample the texture
+                fixed4 col = tex2D(_MainTex, i.uv);
+                // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return fixed4(_Color.rgb * _Intensity, _Color.a);
+                return col;
             }
             ENDCG
         }
