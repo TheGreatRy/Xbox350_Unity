@@ -1,4 +1,4 @@
-Shader "Xbox350/BasicColor"
+Shader "Xbox350/Unlit_Color"
 {
     Properties
     {

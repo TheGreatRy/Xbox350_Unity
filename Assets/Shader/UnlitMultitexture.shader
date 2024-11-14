@@ -3,10 +3,11 @@ Shader "Xbox350/Unlit_Multitexture"
     Properties
     {
         _MainTex1 ("Texture", 2D) = "white" {}
+        _Scroll1("Scroll", Vector) = (0,0,0)
         _MainTex2 ("Texture", 2D) = "white" {}
+        _Scroll2("Scroll", Vector) = (0,0,0)
         _Tint ("Tint", Color) = (1,1,1,1)
         _Intensity("Intensity", Range(0,1)) = 1
-        _Scroll("Scroll", Vector) = (0,0,0)
     }
     SubShader
     {
@@ -43,7 +44,8 @@ Shader "Xbox350/Unlit_Multitexture"
 
             fixed4 _Tint;
             float _Intensity;
-            float4 _Scroll;
+            float4 _Scroll1;
+            float4 _Scroll2;
 
             v2f vert (appdata v)
             {
@@ -51,8 +53,12 @@ Shader "Xbox350/Unlit_Multitexture"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex1);
 
-                o.uv.x = o.uv.x + (_Time.y * _Scroll.x);
-                o.uv.y = o.uv.y + (_Time.y * _Scroll.y);
+                o.uv.x = o.uv.x + (_Time.y * _Scroll1.x);
+                o.uv.y = o.uv.y + (_Time.y * _Scroll1.y);
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex2);
+
+                o.uv.x = o.uv.x + (_Time.y * _Scroll2.x);
+                o.uv.y = o.uv.y + (_Time.y * _Scroll2.y);
 
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
