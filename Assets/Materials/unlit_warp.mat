@@ -108,11 +108,11 @@ Material:
     - _QueueOffset: 0
     - _Rate: 0
     - _ReceiveShadows: 1
-    - _Size: 1.25
+    - _Size: 0.9
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 1.07
+    - _Speed: 2.21
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
