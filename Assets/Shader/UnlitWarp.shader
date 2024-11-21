@@ -3,7 +3,9 @@ Shader "Xbox350/UnlitWarp"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        //The speed the object oscilates
         _Speed ("Speed", Range(0.1, 5.0)) = 1.0
+        //How big the oscilation is
         _Size ("Size", Range(0.1, 5.0)) = 1.0
 
     }
@@ -41,12 +43,14 @@ Shader "Xbox350/UnlitWarp"
             float _Speed;
             float _Size;
             
+            //Random function that gets one value from a pair (Prof Maple)
             float random(float2 st) 
 			{
 				return frac(sin(dot(st.xy,
 					float2(12.9898,78.233))) * 43758.5453123);
 			}
  
+            //Random function that gets two values from a pair (Prof Maple)
 			float2 random2(float2 st)
 			{
 				st = float2(dot(st,float2(127.1,311.7)),
@@ -54,6 +58,7 @@ Shader "Xbox350/UnlitWarp"
 				return -1.0 + 2.0 * frac(sin(st) * 43758.5453123);
 			}
 
+            //Rotation about a pair and uses a float to determine the rate of the waves (https://www.shadertoy.com/view/MdtXRr)
             float2 rotate(float2 p, float a)
             {
                 float s = sin(a);
@@ -65,6 +70,7 @@ Shader "Xbox350/UnlitWarp"
             {
                 v2f o;
                 
+                //Rotate about each pair of axes to get full oscilation, speed affectes rate and size affects how far the object oscilates
                 v.vertex.xz = rotate(v.vertex.xz, _Time.y * _Speed) * _Size;
                 v.vertex.xy= rotate(v.vertex.xy, _Time.y * _Speed) * _Size;
                 v.vertex.yz = rotate(v.vertex.yz, _Time.y * _Speed) * _Size;
